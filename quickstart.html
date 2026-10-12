@@ -360,7 +360,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
         <span class="comment">#   Run script in 64-bit PowerShell host: Yes</span><br>
         <span class="comment">#   Enforce script signature check: No</span><br><br>
         <span class="comment"># To collect HTML reports centrally, use -ExportHTML -OutputPath:</span><br>
-        <span class="cmd">&amp; '.\quickscanscript.ps1'</span> <span class="param">-ExportHTML</span> <span class="param">-OutputPath</span> <span class="string">"\\server\QuickScan-Reports$\%COMPUTERNAME%"</span>
+        <span class="cmd">&amp; '.\quickscanscript.ps1'</span> <span class="param">-ExportHTML</span> <span class="param">-OutputPath</span> <span class="string">"\\server\quickscan-reports$\%COMPUTERNAME%"</span>
     </div>
 
     <h3>Microsoft SCCM / MECM</h3>
@@ -369,7 +369,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
         <span class="comment"># Package source: \\sccm-source\packages\QuickScan\</span><br>
         <span class="comment"># (place quickscanscript.ps1 in this share)</span><br><br>
         <span class="comment"># Program command line:</span><br>
-        <span class="cmd">powershell.exe</span> <span class="param">-ExecutionPolicy Bypass</span> <span class="param">-File</span> <span class="string">".\quickscanscript.ps1"</span> <span class="param">-ExportJSON</span> <span class="param">-ExportHTML</span> <span class="param">-OutputPath</span> <span class="string">"\\server\QuickScan-Reports$\%COMPUTERNAME%"</span><br><br>
+        <span class="cmd">powershell.exe</span> <span class="param">-ExecutionPolicy Bypass</span> <span class="param">-File</span> <span class="string">".\quickscanscript.ps1"</span> <span class="param">-ExportJSON</span> <span class="param">-ExportHTML</span> <span class="param">-OutputPath</span> <span class="string">"\\server\quickscan-reports$\%COMPUTERNAME%"</span><br><br>
         <span class="comment"># Run mode: Run with user's rights</span><br>
         <span class="comment"># Deploy to: Device collection (target OUs or All Workstations)</span>
     </div>
@@ -385,14 +385,14 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
         <span class="comment"># 3. Script name:</span><br>
         <span class="string">"\\domain.local\SYSVOL\domain.local\scripts\quickscanscript.ps1"</span><br><br>
         <span class="comment"># 4. Parameters (optional):</span><br>
-        <span class="param">-ExportJSON -ExportHTML -OutputPath "\\server\QuickScan-Reports$\%COMPUTERNAME%"</span>
+        <span class="param">-ExportJSON -ExportHTML -OutputPath "\\server\quickscan-reports$\%COMPUTERNAME%"</span>
     </div>
 
     <h3>Collecting Reports Centrally</h3>
     <p>Regardless of deployment method, point <code>-OutputPath</code> to a UNC share to collect all results in one place. Create a share with a subfolder per machine using the <code>%COMPUTERNAME%</code> variable:</p>
     <div class="code-block">
         <span class="comment"># Example share structure after scanning 3 machines:</span><br>
-        <span class="string">\\server\QuickScan-Reports$\</span><br>
+        <span class="string">\\server\quickscan-reports$\</span><br>
         <span class="string">&nbsp;&nbsp;├── desktop-abc\</span><br>
         <span class="string">&nbsp;&nbsp;│&nbsp;&nbsp; ├── quick-scan-desktop-abc-20261009-143022.html</span><br>
         <span class="string">&nbsp;&nbsp;│&nbsp;&nbsp; └── quick-scan-desktop-abc-20261009-143022.json</span><br>
