@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-    ClickFix℠ Quick Scan Script - Copy-Paste Attack Posture Assessment
+    Quick Scan Script - Copy-Paste Attack Posture Assessment
 
 .DESCRIPTION
     A free, read-only PowerShell script that evaluates your Windows system's
@@ -48,7 +48,7 @@
     Kill Chain:     P1-P5 (read-only posture checks)
 
 .LINK
-    https://clickfix.com/quick-scan
+    https://clickfix.com/quick-scan/
 
 .DISCLAIMER
     THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
@@ -115,7 +115,7 @@ function Write-Banner {
     $banner = @"
 
     ============================================================
-      ClickFix(SM) Quick Scan Script  v$($Script:Version)
+      Quick Scan Script  v$($Script:Version)
       Copy-Paste Attack Posture Assessment
     ============================================================
       Host:       $($Script:Hostname)
@@ -695,7 +695,7 @@ function Test-CommandLineAuditing {
 function Invoke-QuickScan {
     Write-Banner
 
-    Write-Host "  Starting ClickFix(SM) Quick Scan..." -ForegroundColor White
+    Write-Host "  Starting Quick Scan..." -ForegroundColor White
     Write-Host "  Evaluating defensive posture against copy-paste attacks" -ForegroundColor Gray
     Write-Host "  (MITRE ATT&CK T1204.004)" -ForegroundColor Gray
     Write-Host ""
@@ -776,7 +776,7 @@ function Invoke-QuickScan {
 function Export-ScanResults {
     $exportData = [ordered]@{
         scanMetadata = [ordered]@{
-            product        = "ClickFix℠ Quick Scan Script"
+            product        = "Quick Scan Script"
             version        = $Script:Version
             scanDate       = $Script:ScanDate
             hostname       = $Script:Hostname
@@ -898,7 +898,7 @@ function Export-HtmlReport {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADm0lEQVR4AcRXSWgUQRR93dOzJpP0JC4oGtFEUBQUD4p4UgTFBdwTN9yNqLigxg0UoxKJXkREUQYXNCqoB1c8xYsoCmoQFyRxGaMSQ6YzmSSz9XT7q7KQSDrLZNo0/f78X9X136v6XcW0iOYrPT09W5Zlr8fj+UnQTYBGOb8RionL00wLLoAa54iiWCYIwlrqGEww4xYo6TDCHuJ663a7R5EPkdRkk3OTkDLaKaI4y44r2Q5TcHyoHVl2pgNZkiQ9ysjISBNp1gdayEtyHJjrkTAx1WIKFmRIuJXjxBAbFzFc07TdTMBMEoA1/a1wiAJzTYUsCdg4wNbCsYy9A7zmA63mk7ewDmsqA2j1RzABLe198Sv0tYCmbWjW1AW7E9LIsZTeuLymrYCQ4obnzF1kXngMV14+iej4NkeAZIVceBFWPntAsDlgdCVfgCAg/cBp2CZM4ZyRV0/RUHKW+x2ZpAtwbzkMx9S5nCv2qQyBw7T8aozHHZmkCkhZuhmuhes4T7zyK2r3r4IeauSxkUmaAMeMRUjdsI/zaP5qKAUroNXW8LgzYyjAMigLabtPwj55emfjeZ9t4lT+LB1t0BuCUPauRPy3j/d1ZQwFuHLz4ZydB/mYF675qw3zWEeNh3zkPARJgh6LovbQBqjl7w2f/7fDUEC49D70cAgQRbi3HUXq+r1gM0SbyzJkBOSiyxAcLkDXUFe0E9HXz9o80bVrKCBW9gLKrjxoAYVnSVm+FWkFpwCLxGMxcwA8xdcgypk8Dp4tRLj0Hvd7YgwFsCSxD6/h3zYf8apKFsI5cwnk414wcvnEVVgGDeXtDTfOofGOl/s9NZ0KYMnivgr4t8yDWvGBhbBPmoZ+15/BmjOGx6Ent1F/sYj7iZguBbCkWk0V/NsXIfr2OQsh2JuO1sjLUtSd2kP113l7IqZbAlhivr0KViD89AELEfv4hk65TYCq8jhR020BnIC2WaBwM2ryZ0HZsZh2SeenHB/ThemZAJZM16F+fgc9GmFRr9FzAb2mbJ+ACUj8DWqfK6FI1HX9Cxv5PfL/dFTFWrl+sRUoYQIu/KFzXG3tYE2mIKzpuFTd9P+AJv+YPtNEOl/xtTKqI7c8hLt+FS/r46bgvqJiWXkYH0Mam1wDCSgS/X5/naqqs6jF56MyHPwRwaqKsCko8EVayYkvNxAIVLASIBgMfqLvtPHUeJLwnZC0WlCutvcvmrWXuMYpivKQdfwFAAD//xUCzN8AAAAGSURBVAMA6Tez3Qu7xdsAAAAASUVORK5CYII=">
-    <title>ClickFix℠ Quick Scan Report - $($Script:Hostname)</title>
+    <title>Quick Scan Report - $($Script:Hostname)</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: #1A1A2E; background: #F7FAFC; line-height: 1.6; }
@@ -949,7 +949,7 @@ function Export-HtmlReport {
         <div class="header-inner">
             <img src="data:image/png;base64,$logoBase64" alt="ClickFix" class="logo">
             <div class="header-text">
-                <h1>ClickFix&#8480; Quick Scan Report</h1>
+                <h1>Quick Scan Report</h1>
                 <p>Copy-Paste Attack Posture Assessment (MITRE ATT&amp;CK T1204.004)</p>
             </div>
         </div>
