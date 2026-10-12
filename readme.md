@@ -1,4 +1,4 @@
-# ClickFix℠ Quick Scan Script
+﻿# ClickFix℠ Quick Scan Script
 
 **Version:** 1.0.0  
 **Product of:** Fields Cybersecurity Services, LLC  
