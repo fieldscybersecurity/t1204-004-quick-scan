@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: 5EBAFDA121B31FBDEA0192A32C843F04A32CD3A1111FE970002E4477370CAE58
+SHA-256: 6066874F80EC84B2D630C9026E3F8ED9EA85FF4DCD06E87F1A544FF913B1F23F
 ```
 
 To verify in PowerShell:
