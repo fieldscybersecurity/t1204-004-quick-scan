@@ -1,4 +1,4 @@
-﻿# ClickFix&#8480; Quick Scan Script
+# ClickFix℠ Quick Scan Script
 
 **Version:** 1.0.0  
 **Product of:** Fields Cybersecurity Services, LLC  
@@ -34,7 +34,7 @@ Runs 12 non-invasive checks in under 30 seconds and reports color-coded pass/fai
 
 ### Export Results as JSON
 
-To export results for use with the ClickFix&#8480; Score & Readiness Assessment:
+To export results for use with the ClickFix℠ Score & Readiness Assessment:
 
 ```powershell
 & '.\quickscanscript.ps1' -ExportJSON
@@ -46,7 +46,7 @@ To specify an output directory:
 & '.\quickscanscript.ps1' -ExportJSON -OutputPath "C:\Reports"
 ```
 
-The JSON file can be uploaded to the ClickFix&#8480; Score & Readiness Assessment for a comprehensive remediation roadmap.
+The JSON file can be uploaded to the ClickFix℠ Score & Readiness Assessment for a comprehensive remediation roadmap.
 
 ### Export Results as HTML Report
 
@@ -62,7 +62,7 @@ To specify an output directory:
 & '.\quickscanscript.ps1' -ExportHTML -OutputPath "C:\Reports"
 ```
 
-The HTML report includes the ClickFix&#8480; logo, an overall security grade (A&ndash;F), color-coded results for all 12 checks, and remediation guidance. The file is self-contained with no external dependencies and can be opened in any browser.
+The HTML report includes the ClickFix℠ logo, an overall security grade (A&ndash;F), color-coded results for all 12 checks, and remediation guidance. The file is self-contained with no external dependencies and can be opened in any browser.
 
 You can combine both export flags:
 
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: DEC22A755C9B92DFC53E5B6B8E883DD73E3A23CC2EF76BE2FCAF7F252B1C06F7
+SHA-256: 5EBAFDA121B31FBDEA0192A32C843F04A32CD3A1111FE970002E4477370CAE58
 ```
 
 To verify in PowerShell:
@@ -91,7 +91,7 @@ If the hash does not match, do not run the file. Download a fresh copy from [cli
 If you receive an execution policy error, you can run the script with:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File & '.\quickscanscript.ps1'
+powershell -ExecutionPolicy Bypass -File .\quickscanscript.ps1
 ```
 
 This does not change your system's execution policy. It only applies to this single script execution.
@@ -123,7 +123,7 @@ This does not change your system's execution policy. It only applies to this sin
 
 ## Kill Chain Phases
 
-The ClickFix&#8480; Quick Scan Script covers phases P1 through P5 of the copy-paste attack kill chain:
+The ClickFix℠ Quick Scan Script covers phases P1 through P5 of the copy-paste attack kill chain:
 
 - **P1** &ndash; Lure Delivery: Browser-based fake CAPTCHA or error overlays
 - **P2** &ndash; Clipboard Write: JavaScript clipboard injection
@@ -138,17 +138,17 @@ When using the `-ExportJSON` flag, the output file contains:
 - **scanMetadata**: Host details, scan timestamp, script version
 - **summary**: Total checks, pass/fail/manual counts
 - **results**: Array of all 12 check results with status, detail, kill chain phase, and remediation
-- **upsell**: Link to the ClickFix&#8480; Score & Readiness Assessment
+- **upsell**: Link to the ClickFix℠ Score & Readiness Assessment
 
 ## HTML Report
 
-When using the `-ExportHTML` flag, the script generates a self-contained HTML file named `ClickFix(SM)-quick-scan-<hostname>-<timestamp>.html` that includes:
+When using the `-ExportHTML` flag, the script generates a self-contained HTML file named `quick-scan-<hostname>-<timestamp>.html` that includes:
 
-- ClickFix&#8480; logo and branding
+- ClickFix℠ logo and branding
 - Overall security grade (A through F) based on pass percentage
 - System metadata (hostname, OS version, PowerShell version, scan timestamp)
 - Color-coded results table with remediation guidance for each check
-- Link to the ClickFix&#8480; Score & Readiness Assessment
+- Link to the ClickFix℠ Score & Readiness Assessment
 
 The file has no external dependencies and can be viewed in any modern browser or attached to a report.
 
@@ -156,11 +156,11 @@ The file has no external dependencies and can be viewed in any modern browser or
 
 ## Safety & Trust
 
-The ClickFix&#8480; Quick Scan Script is **strictly read-only**:
+The ClickFix℠ Quick Scan Script is **strictly read-only**:
 
 - Makes zero registry writes
 - Makes zero policy changes
-- Makes zero file modifications
+- Modifies no existing files (report files are created only when you use `-ExportJSON` or `-ExportHTML`)
 - Transmits zero data over the network
 - Has zero external dependencies
 - Requires zero installation
@@ -177,13 +177,19 @@ By downloading or executing this script, you accept the [Terms of Use](https://c
 
 ## Want a Comprehensive Assessment?
 
-The ClickFix&#8480; Quick Scan Script provides a quick posture check. For a full assessment with a prioritized remediation roadmap, try the **ClickFix&#8480; Score & Readiness Assessment** at [clickfix.com/assessment](https://clickfix.com/assessment).
+The ClickFix℠ Quick Scan Script provides a quick posture check. For a full assessment with a prioritized remediation roadmap, try the **ClickFix℠ Score & Readiness Assessment** at [clickfix.com/assessment](https://clickfix.com/assessment).
 
 ---
 
 ## Notice
 
-ClickFix&#8480; is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC. All rights reserved. Fields Cybersecurity Services, LLC and the CLICKFIX&#8480; brand provide defensive cybersecurity consultation, education, and advisory services and are not affiliated with, endorsed by, or associated with the "ClickFix" social-engineering cyberattack technique or related malware campaigns (e.g., Lumma, Vidar, ClearFake).
+ClickFix℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC. All rights reserved. Fields Cybersecurity Services, LLC and the CLICKFIX℠ brand provide defensive cybersecurity consultation, education, and advisory services and are not affiliated with, endorsed by, or associated with the "ClickFix" social-engineering cyberattack technique or related malware campaigns (e.g., Lumma, Vidar, ClearFake).
+
+## Trademarks
+
+The CLICKFIX℠ name and any related logos are identified in the Notice above. The MIT License that covers this software does not grant any right to use them. Modified or redistributed versions of this software must not use the CLICKFIX℠ name or branding in a way that causes confusion or suggests they are published, endorsed or sponsored by Grover Fields or Fields Cybersecurity Services, LLC.
+
+Windows, PowerShell, Microsoft Defender, Chrome, Edge, Firefox and other third-party names are the property of their respective owners and are used only to describe what the script checks. This project is not affiliated with them.
 
 ## Contact
 
@@ -192,4 +198,4 @@ ClickFix&#8480; is a service mark of Grover Fields, used under license by Fields
 
 ---
 
-&copy; Copyright 2026 ClickFix.com. All rights reserved.
+Copyright © 2026 Fields Cybersecurity Services, LLC. Licensed under the MIT License.
