@@ -1,4 +1,4 @@
-﻿# Quick Scan Script
+﻿# CLICKFIX℠ Quick Scan Script
 
 **Version:** 1.0.0  
 **Product of:** Fields Cybersecurity Services, LLC  
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: 777B39E46B321F940C669214249693B5337E5DB3ACAB227A7004E12B96A11E1A
+SHA-256: B302F917F6A5D8B278F516E24331709FBF23A73ACD858B810679C39C18A7752D
 ```
 
 To verify in PowerShell:
