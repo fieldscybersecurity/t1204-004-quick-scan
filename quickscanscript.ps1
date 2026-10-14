@@ -812,7 +812,7 @@ function Export-ScanResults {
 
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     $fileName = "quick-scan-$($Script:Hostname.ToLower())-$timestamp.json"
-    $fileName =  $fileName.ToLower()
+    $fileName = $fileName.ToLower()
     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
 
     try {
@@ -835,7 +835,7 @@ function Export-ScanResults {
 function Export-HtmlReport {
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     $fileName = "quick-scan-$($Script:Hostname.ToLower())-$timestamp.html"
-    $fileName =  $fileName.ToLower()
+    $fileName = $fileName.ToLower()
     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
 
     # Build status counts

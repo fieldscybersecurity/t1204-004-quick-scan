@@ -20,7 +20,7 @@ Runs 12 non-invasive checks in under 30 seconds and reports color-coded pass/fai
 
 ## Quick Start
 
-1. Download `quickscanscript.ps1` from [github.com/fieldscybersecurity/t1204-004-quick-scan](https://clickfix.com/quick-scan/)
+1. Download `quickscanscript.ps1` from [clickfix.com/quick-scan](https://clickfix.com/quick-scan/)
 2. Open PowerShell
 3. Navigate to the download folder:
    ```powershell
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: B302F917F6A5D8B278F516E24331709FBF23A73ACD858B810679C39C18A7752D
+SHA-256: 777B39E46B321F940C669214249693B5337E5DB3ACAB227A7004E12B96A11E1A
 ```
 
 To verify in PowerShell:
@@ -84,7 +84,7 @@ To verify in PowerShell:
 (Get-FileHash '.\quickscanscript.ps1' -Algorithm SHA256).Hash
 ```
 
-If the hash does not match, do not run the file. Download a fresh copy from [github.com/fieldscybersecurity/t1204-004-quick-scan](https://clickfix.com/quick-scan/).
+If the hash does not match, do not run the file. Download a fresh copy from [clickfix.com/quick-scan](https://clickfix.com/quick-scan/).
 
 ## Execution Policy Note
 
@@ -173,7 +173,7 @@ THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPL
 
 This script performs read-only checks and makes no modifications to your system, registry, files, or network configuration. It transmits no data over the network. Users are responsible for reviewing the script and evaluating its suitability for their environment before execution.
 
-By downloading or executing this script, you accept the [Terms of Use](https://clickfix.com/legal/terms/) and the terms of the [MIT License](https://opensource.org/licenses/MIT) under which this software is distributed.
+By downloading or executing this script, you accept the [Terms of Service](https://clickfix.com/legal/terms/) and the terms of the [MIT License](https://opensource.org/licenses/MIT) under which this software is distributed.
 
 ## Want a Comprehensive Assessment?
 
