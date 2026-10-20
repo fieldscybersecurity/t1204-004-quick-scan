@@ -1,4 +1,4 @@
-﻿# CLICKFIX℠ Quick Scan Script
+# CLICKFIX℠ Quick Scan Script
 
 **Version:** 1.0.0  
 **Product of:** Fields Cybersecurity Services, LLC  
@@ -16,7 +16,7 @@ Runs 12 non-invasive checks in under 30 seconds and reports color-coded pass/fai
 - **OS:** Windows 10 (21H2 or later) or Windows 11
 - **PowerShell:** 5.1 or later (included with Windows)
 - **Privileges:** Standard user context (some checks note when admin provides additional detail)
-- **Dependencies:** None &mdash; pure PowerShell, no modules to install
+- **Dependencies:** None — pure PowerShell, no modules to install
 
 ## Quick Start
 
@@ -62,7 +62,7 @@ To specify an output directory:
 & '.\quickscanscript.ps1' -ExportHTML -OutputPath "C:\Reports"
 ```
 
-The HTML report includes the ClickFix℠ logo, an overall security grade (A&ndash;F), color-coded results for all 12 checks, and remediation guidance. The file is self-contained with no external dependencies and can be opened in any browser.
+The HTML report includes the ClickFix℠ logo, an overall security grade (A–F), color-coded results for all 12 checks, and remediation guidance. The file is self-contained with no external dependencies and can be opened in any browser.
 
 You can combine both export flags:
 
@@ -102,18 +102,18 @@ This does not change your system's execution policy. It only applies to this sin
 
 | # | Check | Kill Chain Phase | What It Looks For |
 |---|-------|-----------------|-------------------|
-| 1 | **Run Dialog Access (Win+R)** | P3 &ndash; Paste Destination | Whether Group Policy restricts the Run dialog, a common target for pasted malicious commands. |
-| 2 | **PowerShell Execution Policy** | P4 &ndash; Script Execution | Whether the effective execution policy blocks unsigned scripts (Restricted or AllSigned). |
-| 3 | **PowerShell Constrained Language Mode** | P4 &ndash; Script Execution | Whether PowerShell is running in Constrained Language Mode, which limits dangerous cmdlets and .NET calls. |
-| 4 | **Attack Surface Reduction (ASR) Rules** | P4 &ndash; Script Execution | Whether key ASR rules are enabled in block mode (Office child processes, executable content, script launches). |
-| 5 | **Browser Enterprise Policies** | P1&ndash;P2 &ndash; Lure/Clipboard | Whether Chrome, Edge, or Firefox enterprise management policies are deployed. |
-| 6 | **Windows Defender SmartScreen** | P4 &ndash; Script Execution | Whether SmartScreen is active to warn about unrecognized downloaded executables. |
-| 7 | **Script Host Access (wscript/cscript)** | P4 &ndash; Script Execution | Whether Windows Script Host executables are blocked by ASR rules or application control. |
-| 8 | **Mark of the Web (MOTW)** | P4 &ndash; Script Execution | Whether downloaded files retain their zone identifier, which triggers security prompts. |
-| 9 | **VBA Macro Execution Policy** | P4 &ndash; Script Execution | Whether Office macro execution is restricted by policy (disabled or signature-only). |
-| 10 | **Startup Folder Monitoring** | P5 &ndash; Persistence | Whether startup folders contain items and whether file system auditing is enabled to detect persistence. |
-| 11 | **PowerShell Logging & Transcription** | P4 &ndash; Script Execution | Whether Script Block Logging, Module Logging, and Transcription are enabled for forensic visibility. |
-| 12 | **Command-Line Process Auditing** | P4 &ndash; Script Execution | Whether process creation events capture the full command line (Event ID 4688). |
+| 1 | **Run Dialog Access (Win+R)** | P3 – Paste Destination | Whether Group Policy restricts the Run dialog, a common target for pasted malicious commands. |
+| 2 | **PowerShell Execution Policy** | P4 – Script Execution | Whether the effective execution policy blocks unsigned scripts (Restricted or AllSigned). |
+| 3 | **PowerShell Constrained Language Mode** | P4 – Script Execution | Whether PowerShell is running in Constrained Language Mode, which limits dangerous cmdlets and .NET calls. |
+| 4 | **Attack Surface Reduction (ASR) Rules** | P4 – Script Execution | Whether key ASR rules are enabled in block mode (Office child processes, executable content, script launches). |
+| 5 | **Browser Enterprise Policies** | P1–P2 – Lure/Clipboard | Whether Chrome, Edge, or Firefox enterprise management policies are deployed. |
+| 6 | **Windows Defender SmartScreen** | P4 – Script Execution | Whether SmartScreen is active to warn about unrecognized downloaded executables. |
+| 7 | **Script Host Access (wscript/cscript)** | P4 – Script Execution | Whether Windows Script Host executables are blocked by ASR rules or application control. |
+| 8 | **Mark of the Web (MOTW)** | P4 – Script Execution | Whether downloaded files retain their zone identifier, which triggers security prompts. |
+| 9 | **VBA Macro Execution Policy** | P4 – Script Execution | Whether Office macro execution is restricted by policy (disabled or signature-only). |
+| 10 | **Startup Folder Monitoring** | P5 – Persistence | Whether startup folders contain items and whether file system auditing is enabled to detect persistence. |
+| 11 | **PowerShell Logging & Transcription** | P4 – Script Execution | Whether Script Block Logging, Module Logging, and Transcription are enabled for forensic visibility. |
+| 12 | **Command-Line Process Auditing** | P4 – Script Execution | Whether process creation events capture the full command line (Event ID 4688). |
 
 ## Understanding the Results
 
@@ -125,11 +125,11 @@ This does not change your system's execution policy. It only applies to this sin
 
 The Quick Scan Script covers phases P1 through P5 of the copy-paste attack kill chain:
 
-- **P1** &ndash; Lure Delivery: Browser-based fake CAPTCHA or error overlays
-- **P2** &ndash; Clipboard Write: JavaScript clipboard injection
-- **P3** &ndash; Paste Destination: Windows Run dialog, PowerShell, cmd.exe
-- **P4** &ndash; Script Execution: PowerShell, mshta, curl, bitsadmin payloads
-- **P5** &ndash; Persistence: Registry run keys, scheduled tasks, startup folder drops
+- **P1** – Lure Delivery: Browser-based fake CAPTCHA or error overlays
+- **P2** – Clipboard Write: JavaScript clipboard injection
+- **P3** – Paste Destination: Windows Run dialog, PowerShell, cmd.exe
+- **P4** – Script Execution: PowerShell, mshta, curl, bitsadmin payloads
+- **P5** – Persistence: Registry run keys, scheduled tasks, startup folder drops
 
 ## JSON Export Schema
 
@@ -169,7 +169,7 @@ You can review every line of the script before running it. It is a single `.ps1`
 
 ## Disclaimer
 
-THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL FIELDS CYBERSECURITY SERVICES, LLC, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL FIELDS CYBERSECURITY SERVICES, LLC, GROVER FIELDS, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 This script performs read-only checks and makes no modifications to your system, registry, files, or network configuration. It transmits no data over the network. Users are responsible for reviewing the script and evaluating its suitability for their environment before execution.
 
