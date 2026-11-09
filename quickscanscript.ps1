@@ -5,7 +5,7 @@
 .DESCRIPTION
     A free, read-only PowerShell script that evaluates your Windows system's
     defensive posture against copy-paste social engineering and clipboard
-    hijacking attacks (MITRE ATT&CK T1204.004).
+    hijacking attacks (MITRE ATT&CK® T1204.004).
 
     Runs 12 non-invasive checks and reports pass/fail results. No system
     modifications, no data transmission, no external dependencies.
@@ -182,6 +182,19 @@ function Write-Banner {
 
 "@
     Write-Host $banner -ForegroundColor Cyan
+}
+
+function Get-PostureGrade {
+    # Single source of truth for the letter grade. The console summary and the
+    # HTML report both call this, so they cannot disagree about the verdict.
+    # Checks reported as N/A are excluded: an edition limitation is not a failure.
+    $applicable = $Script:TotalChecks - $Script:NACount
+    if ($applicable -le 0) { return "N/A" }
+    if ($Script:FailCount -eq 0 -and $Script:ManualCount -eq 0) { return "A" }
+    if ($Script:FailCount -eq 0) { return "B" }
+    if ($Script:FailCount -le 3) { return "C" }
+    if ($Script:FailCount -le 6) { return "D" }
+    return "F"
 }
 
 function Add-CheckResult {
@@ -506,8 +519,14 @@ function Test-ScriptHostAccess {
     }
 
     # AppLocker / SRP policies may also block the script hosts, but their rules must be reviewed by hand
-    $hasApplocker = Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\SrpV2"
-    $hasSRP       = Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers"
+    # AppLocker is Enterprise/Education only and SRP is Pro or above. On Windows
+    # Home neither can run, so a leftover policy key proves nothing and must not
+    # be read as a control that is present. A key only counts as evidence when
+    # the Application Identity service that enforces it exists on the machine.
+    $appIdService     = Get-Service -Name AppIDSvc -ErrorAction SilentlyContinue
+    $appControlUsable = (-not $Script:IsHomeEdition) -and ($null -ne $appIdService)
+    $hasApplocker = $appControlUsable -and (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\SrpV2")
+    $hasSRP       = $appControlUsable -and (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers")
 
     if ($wshDisabled) {
         Add-CheckResult -CheckName "Script Host Access (wscript/cscript)" `
@@ -519,7 +538,7 @@ function Test-ScriptHostAccess {
         Add-CheckResult -CheckName "Script Host Access (wscript/cscript)" `
             -Description "Checks if Windows Script Host is disabled or blocked" `
             -Status "MANUAL CHECK" `
-            -Detail "Application control policies exist (AppLocker/SRP). Verify they block wscript.exe and cscript.exe." `
+            -Detail "Application control policies exist (AppLocker/SRP) and the Application Identity service is running. Verify the rules block wscript.exe and cscript.exe." `
             -KillChainPhase "P4" `
             -Remediation "Disable Windows Script Host or add AppLocker/WDAC rules to block wscript.exe and cscript.exe for standard users."
     } else {
@@ -778,7 +797,7 @@ function Invoke-QuickScan {
 
     Write-Host "  Starting Quick Scan..." -ForegroundColor White
     Write-Host "  Evaluating defensive posture against copy-paste attacks" -ForegroundColor Gray
-    Write-Host "  (MITRE ATT&CK T1204.004)" -ForegroundColor Gray
+    Write-Host "  (MITRE ATT&CK® T1204.004)" -ForegroundColor Gray
     Write-Host ""
     Write-Host "  ============================================================" -ForegroundColor DarkGray
     Write-Host ""
@@ -813,6 +832,16 @@ function Invoke-QuickScan {
     if ($Script:NACount -gt 0) {
         Write-Host "    N/A:           $($Script:NACount) of $($Script:TotalChecks) (not applicable on Windows $($Script:EditionName))" -ForegroundColor DarkGray
     }
+    $grade = Get-PostureGrade
+    $gradeColour = switch ($grade) {
+        "A"     { "Green" }
+        "B"     { "Green" }
+        "C"     { "Yellow" }
+        "D"     { "Yellow" }
+        "F"     { "Red" }
+        default { "DarkGray" }
+    }
+    Write-Host "    GRADE:         $grade" -ForegroundColor $gradeColour
     Write-Host ""
 
     if ($Script:FailCount -eq 0 -and $Script:ManualCount -eq 0) {
@@ -931,15 +960,9 @@ function Export-HtmlReport {
     $failResults = $Script:Results | Where-Object { $_.Status -eq "FAIL" }
     $manualResults = $Script:Results | Where-Object { $_.Status -eq "MANUAL CHECK" }
 
-    # Determine overall grade. Checks reported as N/A are excluded from the
-    # denominator so that an edition limitation never reads as a failure.
+    # Determine overall grade (shared with the console summary so the two agree).
     $Script:ApplicableCount = $Script:TotalChecks - $Script:NACount
-    $grade = if ($Script:ApplicableCount -le 0) { "N/A" }
-             elseif ($Script:FailCount -eq 0 -and $Script:ManualCount -eq 0) { "A" }
-             elseif ($Script:FailCount -eq 0) { "B" }
-             elseif ($Script:FailCount -le 3) { "C" }
-             elseif ($Script:FailCount -le 6) { "D" }
-             else { "F" }
+    $grade = Get-PostureGrade
 
     $gradeColor = switch ($grade) {
         "A" { "#00875A" }

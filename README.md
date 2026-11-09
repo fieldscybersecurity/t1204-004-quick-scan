@@ -5,7 +5,7 @@
 **Author:** Grover Fields  
 **License:** MIT  
 
-A free, read-only PowerShell script that evaluates your Windows system's defensive posture against copy-paste social engineering and clipboard hijacking attacks (MITRE ATT&CK T1204.004).
+A free, read-only PowerShell script that evaluates your Windows system's defensive posture against copy-paste social engineering and clipboard hijacking attacks (MITRE ATT&CK® T1204.004).
 
 Runs 12 non-invasive checks in under 30 seconds and reports color-coded pass/fail results. No system modifications, no data transmission, no external dependencies.
 
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: 5659FA13614BB0A817A4CCEFBFBBD6F623B88E6B1505C6318897B864778EC33A
+SHA-256: 9DD6E59EF792900FD83C06DF8122069CF1E9F85972E7A998E04E68D9EFB63D48
 ```
 
 To verify in PowerShell:
@@ -138,6 +138,8 @@ powershell -ExecutionPolicy Bypass -Scope Process -File .\quickscanscript.ps1
 - **MANUAL CHECK** (yellow): The control requires human review to confirm its configuration.
 - **N/A** (grey): The check cannot be expressed on this edition of Windows and is excluded from the grade. On Windows Home that is currently PowerShell Constrained Language Mode only, because the edition has no AppLocker or App Control policy to enforce it.
 
+The console summary and the HTML report both print the overall grade, and both use the same calculation.
+
 ## Kill Chain Phases
 
 The Quick Scan Script covers phases P1 through P5 of the copy-paste attack kill chain:
@@ -162,7 +164,7 @@ When using the `-ExportJSON` flag, the output file contains:
 When using the `-ExportHTML` flag, the script generates a self-contained HTML file named `quick-scan-<hostname>-<timestamp>.html` that includes:
 
 - CLICKFIX℠ logo and branding
-- Overall security grade (A through F) based on pass percentage
+- Overall security grade (A–F) from the failed-check count, with N/A checks excluded — A: no failures and no manual checks, B: no failures, C: 1–3 failures, D: 4–6, F: 7 or more
 - System metadata (hostname, OS version, PowerShell version, scan timestamp)
 - Color-coded results table with remediation guidance for each check
 - Link to the CLICKFIX℠ Score & Readiness Assessment
