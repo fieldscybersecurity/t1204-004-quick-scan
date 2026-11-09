@@ -52,7 +52,7 @@
     Runs the quick scan and exports reports with the host and user names redacted.
 
 .NOTES
-    Version:        1.0.0
+    Version:        1.0.2
     Author:         Grover Fields
     Copyright:      (c) 2026 Fields Cybersecurity Services, LLC. All rights reserved.
     License:        MIT
@@ -105,7 +105,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding           = [System.Text.Encoding]::UTF8
 
-$Script:Version = "1.0.0"
+$Script:Version = "1.0.2"
 $Script:ScanDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $Script:RawHostname = $env:COMPUTERNAME
 $Script:RawUsername = $env:USERNAME
@@ -117,6 +117,20 @@ $Script:FileHostTag = if ($Anonymize) { "redacted" } else { "$($Script:RawHostna
 $Script:IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 $Script:OSVersion = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
 $Script:PSVersion = $PSVersionTable.PSVersion.ToString()
+
+# ---------------------------------------------------------------------------
+# EDITION CAPABILITY
+# Some controls have no supported configuration path on Windows Home: no Group
+# Policy editor, no AppLocker, no Intune enrolment. Grading a Home device
+# against those reports a failure its owner cannot clear, which devalues the
+# failures that are real. Those checks are reported as N/A and excluded from
+# the grade. Registry-driven controls - SmartScreen, Windows Script Host,
+# Mark of the Web, macro policy, PowerShell logging, ASR, audit policy - are
+# honoured on Home and are still graded.
+# ---------------------------------------------------------------------------
+$Script:IsHomeEdition = ($Script:OSVersion -match '\bHome\b')
+$Script:EditionName   = if ($Script:IsHomeEdition) { 'Home' } else { 'Professional or higher' }
+$Script:NACount       = 0
 
 # Results collection
 $Script:Results = @()
@@ -161,6 +175,7 @@ function Write-Banner {
       User:       $($Script:Username)
       Admin:      $($Script:IsAdmin)
       OS:         $($Script:OSVersion)
+      Edition:    $($Script:EditionName)
       PowerShell: $($Script:PSVersion)
       Scan Date:  $($Script:ScanDate)
     ============================================================
@@ -173,7 +188,7 @@ function Add-CheckResult {
     param(
         [string]$CheckName,
         [string]$Description,
-        [ValidateSet("PASS","FAIL","MANUAL CHECK")]
+        [ValidateSet("PASS","FAIL","MANUAL CHECK","N/A")]
         [string]$Status,
         [string]$Detail,
         [string]$KillChainPhase,
@@ -192,18 +207,21 @@ function Add-CheckResult {
         "PASS"          { "Green" }
         "FAIL"          { "Red" }
         "MANUAL CHECK"  { "Yellow" }
+        "N/A"           { "DarkGray" }
     }
 
     $icon = switch ($Status) {
         "PASS"          { "[PASS]" }
         "FAIL"          { "[FAIL]" }
         "MANUAL CHECK"  { "[CHECK]" }
+        "N/A"           { "[N/A] " }
     }
 
     switch ($Status) {
         "PASS"          { $Script:PassCount++ }
         "FAIL"          { $Script:FailCount++ }
         "MANUAL CHECK"  { $Script:ManualCount++ }
+        "N/A"           { $Script:NACount++ }
     }
 
     $checkLabel = "  [$($Script:CheckNumber)/$($Script:TotalChecks)]"
@@ -305,6 +323,12 @@ function Test-ConstrainedLanguageMode {
             -Description "Checks if PowerShell is running in Constrained Language Mode" `
             -Status "PASS" `
             -Detail "Language mode is '$langMode'. Dangerous cmdlets and .NET calls are restricted." `
+            -KillChainPhase "P4"
+    } elseif ($Script:IsHomeEdition) {
+        Add-CheckResult -CheckName "PowerShell Constrained Language Mode" `
+            -Description "Checks if PowerShell is running in Constrained Language Mode" `
+            -Status "N/A" `
+            -Detail "Not assessed: enforcing Constrained Language Mode requires an AppLocker or App Control policy. Windows Home ships no policy editor and no supported way to deploy one, so this control cannot be configured on this edition. It is excluded from the grade." `
             -KillChainPhase "P4"
     } elseif ($langMode -eq "FullLanguage") {
         Add-CheckResult -CheckName "PowerShell Constrained Language Mode" `
@@ -719,13 +743,22 @@ function Test-CommandLineAuditing {
             -Detail "Process creation auditing is on, but command-line logging may not be enabled." `
             -KillChainPhase "P4" `
             -Remediation "Set 'Include command line in process creation events' via GPO under Admin Templates > System > Audit Process Creation."
-    } elseif (-not $auditReadable -and -not $Script:IsAdmin) {
+    } elseif (-not $auditReadable) {
+        # Unreadable is not the same as disabled. If auditpol cannot answer -
+        # non-elevated session, missing binary, or a policy blocking the query -
+        # the audit state is unknown and must be confirmed by hand, never
+        # reported as a failure the user did not earn.
+        $auditDetail = if (-not $Script:IsAdmin) {
+            "The process-creation audit policy could not be read from a non-elevated session. Re-run as Administrator to verify."
+        } else {
+            "auditpol could not be queried, so the audit policy is unknown. Check it manually with: auditpol /get /subcategory:`"{0CCE922B-69AE-11D9-BED3-505054503030}`""
+        }
         Add-CheckResult -CheckName "Command-Line Process Auditing" `
             -Description "Checks if process creation events include the full command line" `
             -Status "MANUAL CHECK" `
-            -Detail "The process-creation audit policy could not be read from a non-elevated session. Re-run as Administrator to verify." `
+            -Detail $auditDetail `
             -KillChainPhase "P4" `
-            -RequiresAdmin
+            -RequiresAdmin:(-not $Script:IsAdmin)
     } else {
         Add-CheckResult -CheckName "Command-Line Process Auditing" `
             -Description "Checks if process creation events include the full command line" `
@@ -777,6 +810,9 @@ function Invoke-QuickScan {
     Write-Host "    PASS:          $($Script:PassCount) of $($Script:TotalChecks)" -ForegroundColor Green
     Write-Host "    FAIL:          $($Script:FailCount) of $($Script:TotalChecks)" -ForegroundColor Red
     Write-Host "    MANUAL CHECK:  $($Script:ManualCount) of $($Script:TotalChecks)" -ForegroundColor Yellow
+    if ($Script:NACount -gt 0) {
+        Write-Host "    N/A:           $($Script:NACount) of $($Script:TotalChecks) (not applicable on Windows $($Script:EditionName))" -ForegroundColor DarkGray
+    }
     Write-Host ""
 
     if ($Script:FailCount -eq 0 -and $Script:ManualCount -eq 0) {
@@ -833,12 +869,15 @@ function Export-ScanResults {
             isAdmin        = $Script:IsAdmin
             osVersion      = $Script:OSVersion
             psVersion      = $Script:PSVersion
+            edition        = $Script:EditionName
         }
         summary = [ordered]@{
             totalChecks    = $Script:TotalChecks
             passed         = $Script:PassCount
             failed         = $Script:FailCount
             manualCheck    = $Script:ManualCount
+            notApplicable  = $Script:NACount
+            applicable     = $Script:TotalChecks - $Script:NACount
         }
         results = $Script:Results | ForEach-Object {
             [ordered]@{
@@ -892,8 +931,11 @@ function Export-HtmlReport {
     $failResults = $Script:Results | Where-Object { $_.Status -eq "FAIL" }
     $manualResults = $Script:Results | Where-Object { $_.Status -eq "MANUAL CHECK" }
 
-    # Determine overall grade
-    $grade = if ($Script:FailCount -eq 0 -and $Script:ManualCount -eq 0) { "A" }
+    # Determine overall grade. Checks reported as N/A are excluded from the
+    # denominator so that an edition limitation never reads as a failure.
+    $Script:ApplicableCount = $Script:TotalChecks - $Script:NACount
+    $grade = if ($Script:ApplicableCount -le 0) { "N/A" }
+             elseif ($Script:FailCount -eq 0 -and $Script:ManualCount -eq 0) { "A" }
              elseif ($Script:FailCount -eq 0) { "B" }
              elseif ($Script:FailCount -le 3) { "C" }
              elseif ($Script:FailCount -le 6) { "D" }
@@ -905,6 +947,7 @@ function Export-HtmlReport {
         "C" { "#FF8B00" }
         "D" { "#FF5630" }
         "F" { "#DE350B" }
+        "N/A" { "#718096" }
     }
 
     # Build results rows
@@ -914,11 +957,13 @@ function Export-HtmlReport {
             "PASS"          { "pass" }
             "FAIL"          { "fail" }
             "MANUAL CHECK"  { "manual" }
+            "N/A"           { "na" }
         }
         $statusIcon = switch ($r.Status) {
             "PASS"          { "&#10004;" }
             "FAIL"          { "&#10008;" }
             "MANUAL CHECK"  { "&#9888;" }
+            "N/A"           { "&#8212;" }
         }
         $encDetail = [System.Net.WebUtility]::HtmlEncode([string]$r.Detail)
         $encRemed  = [System.Net.WebUtility]::HtmlEncode([string]$r.Remediation)
@@ -967,6 +1012,7 @@ function Export-HtmlReport {
         .summary-card .value.pass { color: #00875A; }
         .summary-card .value.fail { color: #DE350B; }
         .summary-card .value.manual { color: #FF8B00; }
+        .summary-card .value.na { color: #718096; }
         .summary-card .value.grade { color: $gradeColor; }
         .meta { max-width: 960px; margin: 0 auto 24px; padding: 0 24px; }
         .meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.85rem; }
@@ -980,12 +1026,14 @@ function Export-HtmlReport {
         tr.pass td { background: #F0FFF4; }
         tr.fail td { background: #FFF5F5; }
         tr.manual td { background: #FFFAF0; }
+        tr.na td { background: #F7FAFC; }
         .check-num { width: 40px; text-align: center; font-weight: 700; }
         .check-phase { width: 60px; text-align: center; color: #718096; font-size: 0.8rem; }
         .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
         .status-badge.pass { background: #C6F6D5; color: #22543D; }
         .status-badge.fail { background: #FED7D7; color: #822727; }
         .status-badge.manual { background: #FEFCBF; color: #744210; }
+        .status-badge.na { background: #E2E8F0; color: #2D3748; }
         .remediation { margin-top: 6px; padding: 6px 10px; background: #FFF5F5; border-left: 3px solid #DE350B; border-radius: 0 4px 4px 0; font-size: 0.8rem; color: #822727; }
         .nextstep { max-width: 960px; margin: 24px auto; padding: 0 24px; }
         .nextstep-card { background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%); border: 1px solid #FDBA74; border-radius: 8px; padding: 24px; text-align: center; }
@@ -1012,6 +1060,7 @@ function Export-HtmlReport {
         <div class="summary-card"><div class="label">Passed</div><div class="value pass">$($Script:PassCount)</div></div>
         <div class="summary-card"><div class="label">Failed</div><div class="value fail">$($Script:FailCount)</div></div>
         <div class="summary-card"><div class="label">Manual Check</div><div class="value manual">$($Script:ManualCount)</div></div>
+        <div class="summary-card"><div class="label">Not Applicable</div><div class="value na">$($Script:NACount)</div></div>
         <div class="summary-card"><div class="label">Total Checks</div><div class="value">$($Script:TotalChecks)</div></div>
     </div>
     <div class="meta">

@@ -1,6 +1,6 @@
 ﻿# CLICKFIX℠ Quick Scan Script
 
-**Version 1.0.0**   
+**Version 1.0.2**   
 **Product of:** Fields Cybersecurity Services, LLC  
 **Author:** Grover Fields  
 **License:** MIT  
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: 58638CF01446A95FFBEEBA87FA0EDCE2D5B8FE217147A40A5A4EAC1331FF9564
+SHA-256: 23B1016A62EBE4E6447A6FB7E923432A60DE24046890D0BF81250AF0020574E0
 ```
 
 To verify in PowerShell:
@@ -120,7 +120,7 @@ powershell -ExecutionPolicy Bypass -Scope Process -File .\quickscanscript.ps1
 |---|-------|-----------------|-------------------|
 | 1 | **Run Dialog Access (Win+R)** | P3 – Paste Destination | Whether Group Policy restricts the Run dialog, a common target for pasted malicious commands. |
 | 2 | **PowerShell Execution Policy** | P4 – Script Execution | Whether the effective execution policy blocks unsigned scripts (Restricted or AllSigned). |
-| 3 | **PowerShell Constrained Language Mode** | P4 – Script Execution | Whether PowerShell is running in Constrained Language Mode, which limits dangerous cmdlets and .NET calls. |
+| 3 | **PowerShell Constrained Language Mode** | P4 – Script Execution | Whether PowerShell is running in Constrained Language Mode, which limits dangerous cmdlets and .NET calls. Reported as N/A on Windows Home, which has no AppLocker or App Control policy to enforce it. |
 | 4 | **Attack Surface Reduction (ASR) Rules** | P4 – Script Execution | Whether key ASR rules are enabled in block mode (Office child processes, executable content, script launches). |
 | 5 | **Browser Enterprise Policies** | P1–P2 – Lure/Clipboard | Whether Chrome, Edge, or Firefox enterprise management policies are deployed. |
 | 6 | **Windows Defender SmartScreen** | P4 – Script Execution | Whether SmartScreen is active to warn about unrecognized downloaded executables. |
@@ -136,6 +136,7 @@ powershell -ExecutionPolicy Bypass -Scope Process -File .\quickscanscript.ps1
 - **PASS** (green): The defensive control is active and properly configured.
 - **FAIL** (red): The control is missing or misconfigured. A remediation suggestion is provided.
 - **MANUAL CHECK** (yellow): The control requires human review to confirm its configuration.
+- **N/A** (grey): The check cannot be expressed on this edition of Windows and is excluded from the grade. On Windows Home that is currently PowerShell Constrained Language Mode only, because the edition has no AppLocker or App Control policy to enforce it.
 
 ## Kill Chain Phases
 
@@ -151,8 +152,8 @@ The Quick Scan Script covers phases P1 through P5 of the copy-paste attack kill 
 
 When using the `-ExportJSON` flag, the output file contains:
 
-- **scanMetadata**: Host details, scan timestamp, script version
-- **summary**: Total checks, pass/fail/manual counts
+- **scanMetadata**: Host details, scan timestamp, script version, Windows edition
+- **summary**: Total checks, pass/fail/manual counts, not-applicable count, and the number of applicable checks
 - **results**: Array of all 12 check results with status, detail, kill chain phase, and remediation
 - **nextStep**: Link to the CLICKFIX℠ Score & Readiness Assessment
 
