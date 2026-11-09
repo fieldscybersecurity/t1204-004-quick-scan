@@ -1,6 +1,6 @@
-# CLICKFIX℠ Quick Scan Script
+﻿# CLICKFIX℠ Quick Scan Script
 
-**Version:** 1.0.0  
+**Version 1.0.0**   
 **Product of:** Fields Cybersecurity Services, LLC  
 **Author:** Grover Fields  
 **License:** MIT  
@@ -34,7 +34,7 @@ Runs 12 non-invasive checks in under 30 seconds and reports color-coded pass/fai
 
 ### Export Results as JSON
 
-To export results for use with the ClickFix℠ Score & Readiness Assessment:
+To export results for use with the CLICKFIX℠ Score & Readiness Assessment:
 
 ```powershell
 & '.\quickscanscript.ps1' -ExportJSON
@@ -46,7 +46,7 @@ To specify an output directory:
 & '.\quickscanscript.ps1' -ExportJSON -OutputPath "C:\Reports"
 ```
 
-The JSON file can be uploaded to the ClickFix℠ Score & Readiness Assessment for a comprehensive remediation roadmap.
+The JSON file can be uploaded to the CLICKFIX℠ Score & Readiness Assessment for a comprehensive remediation roadmap.
 
 ### Export Results as HTML Report
 
@@ -62,7 +62,7 @@ To specify an output directory:
 & '.\quickscanscript.ps1' -ExportHTML -OutputPath "C:\Reports"
 ```
 
-The HTML report includes the ClickFix℠ logo, an overall security grade (A–F), color-coded results for all 12 checks, and remediation guidance. The file is self-contained with no external dependencies and can be opened in any browser.
+The HTML report includes the CLICKFIX℠ logo, an overall security grade (A–F), color-coded results for all 12 checks, and remediation guidance. The file is self-contained with no external dependencies and can be opened in any browser.
 
 You can combine both export flags:
 
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: 777B39E46B321F940C669214249693B5337E5DB3ACAB227A7004E12B96A11E1A
+SHA-256: 58638CF01446A95FFBEEBA87FA0EDCE2D5B8FE217147A40A5A4EAC1331FF9564
 ```
 
 To verify in PowerShell:
@@ -88,13 +88,29 @@ If the hash does not match, do not run the file. Download a fresh copy from [cli
 
 ## Execution Policy Note
 
-If you receive an execution policy error, you can run the script with:
+If Windows blocks the script, the usual cause is the Mark of the Web on a downloaded file, not your execution policy. Clear that first:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\quickscanscript.ps1
+Unblock-File .\quickscanscript.ps1
 ```
 
-This does not change your system's execution policy. It only applies to this single script execution.
+Then run the script again. This marks the file as trusted locally; it does not change any policy setting.
+
+If you still receive an error, check what your policy is set to before changing anything:
+
+```powershell
+Get-ExecutionPolicy -List
+```
+
+A policy of `Restricted` blocks all scripts, and only an administrator can change it. `RemoteSigned` and `AllSigned` are the common corporate settings.
+
+As a last resort, you can bypass the policy for this one process only:
+
+```powershell
+powershell -ExecutionPolicy Bypass -Scope Process -File .\quickscanscript.ps1
+```
+
+`-Scope Process` applies to that one PowerShell session and ends when the window closes. It does not change your system's execution policy. Prefer `Unblock-File`: bypassing a policy is a choice you should make deliberately, not a first step.
 
 ---
 
@@ -138,17 +154,17 @@ When using the `-ExportJSON` flag, the output file contains:
 - **scanMetadata**: Host details, scan timestamp, script version
 - **summary**: Total checks, pass/fail/manual counts
 - **results**: Array of all 12 check results with status, detail, kill chain phase, and remediation
-- **upsell**: Link to the ClickFix℠ Score & Readiness Assessment
+- **nextStep**: Link to the CLICKFIX℠ Score & Readiness Assessment
 
 ## HTML Report
 
 When using the `-ExportHTML` flag, the script generates a self-contained HTML file named `quick-scan-<hostname>-<timestamp>.html` that includes:
 
-- ClickFix℠ logo and branding
+- CLICKFIX℠ logo and branding
 - Overall security grade (A through F) based on pass percentage
 - System metadata (hostname, OS version, PowerShell version, scan timestamp)
 - Color-coded results table with remediation guidance for each check
-- Link to the ClickFix℠ Score & Readiness Assessment
+- Link to the CLICKFIX℠ Score & Readiness Assessment
 
 The file has no external dependencies and can be viewed in any modern browser or attached to a report.
 
@@ -177,13 +193,13 @@ By downloading or executing this script, you accept the [Terms of Service](https
 
 ## Want a Comprehensive Assessment?
 
-The Quick Scan Script provides a quick posture check. For a full assessment with a prioritized remediation roadmap, try the **ClickFix℠ Score & Readiness Assessment** at [clickfix.com/assessment](https://clickfix.com/assessment).
+The Quick Scan Script provides a quick posture check. For a full assessment with a prioritized remediation roadmap, try the **CLICKFIX℠ Score & Readiness Assessment** at [clickfix.com/assessment](https://clickfix.com/assessment).
 
 ---
 
 ## Notice
 
-ClickFix℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC. All rights reserved. Fields Cybersecurity Services, LLC and the CLICKFIX℠ brand provide defensive cybersecurity consultation, education, and advisory services and are not affiliated with, endorsed by, or associated with the "ClickFix" social-engineering cyberattack technique or related malware campaigns (e.g., Lumma, Vidar, ClearFake).
+ClickFix refers to a social engineering attack technique (MITRE ATT&CK® T1204.004). CLICKFIX℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com), established 2001 and unrelated to this attack technique. All rights reserved. Fields Cybersecurity Services, LLC provides defensive cybersecurity consultation, education and advisory services and has no connection with any malware campaign, threat actor or product that uses the name.
 
 ## Trademarks
 
