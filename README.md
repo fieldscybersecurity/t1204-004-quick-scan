@@ -1,6 +1,6 @@
 ﻿# CLICKFIX℠ Quick Scan Script
 
-**Version 1.0.2**   
+**Version 1.0.0**   
 **Product of:** Fields Cybersecurity Services, LLC  
 **Author:** Grover Fields  
 **License:** MIT  
@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: 23B1016A62EBE4E6447A6FB7E923432A60DE24046890D0BF81250AF0020574E0
+SHA-256: 5659FA13614BB0A817A4CCEFBFBBD6F623B88E6B1505C6318897B864778EC33A
 ```
 
 To verify in PowerShell:
@@ -205,6 +205,8 @@ ClickFix refers to a social engineering attack technique (MITRE ATT&CK® T1204.0
 ## Trademarks
 
 The CLICKFIX℠ name and any related logos are identified in the Notice above. The MIT License that covers this software does not grant any right to use them. Modified or redistributed versions of this software must not use the CLICKFIX℠ name or branding in a way that causes confusion or suggests they are published, endorsed or sponsored by Grover Fields or Fields Cybersecurity Services, LLC.
+
+MITRE ATT&CK® is a registered trademark of The MITRE Corporation. This project uses the ATT&CK identifier to describe the technique it assesses, and is not affiliated with, endorsed by or sponsored by MITRE.
 
 Windows, PowerShell, Microsoft Defender, Chrome, Edge, Firefox and other third-party names are the property of their respective owners and are used only to describe what the script checks. This project is not affiliated with them.
 

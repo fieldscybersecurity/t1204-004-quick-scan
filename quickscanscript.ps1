@@ -52,7 +52,7 @@
     Runs the quick scan and exports reports with the host and user names redacted.
 
 .NOTES
-    Version:        1.0.2
+    Version:        1.0.0
     Author:         Grover Fields
     Copyright:      (c) 2026 Fields Cybersecurity Services, LLC. All rights reserved.
     License:        MIT
@@ -105,7 +105,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding           = [System.Text.Encoding]::UTF8
 
-$Script:Version = "1.0.2"
+$Script:Version = "1.0.0"
 $Script:ScanDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $Script:RawHostname = $env:COMPUTERNAME
 $Script:RawUsername = $env:USERNAME
@@ -1092,7 +1092,8 @@ $resultRows
     </div>
     <div class="footer">
         ClickFix refers to a social engineering attack technique (MITRE ATT&amp;CK&#174; T1204.004). CLICKFIX&#8480; is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com), established 2001 and unrelated to this attack technique. All rights reserved. Fields Cybersecurity Services, LLC provides defensive cybersecurity consultation, education and advisory services and has no connection with any malware campaign, threat actor or product that uses the name.
-          <br>https://clickfix.com | v$($Script:Version)
+          <br>MITRE ATT&amp;CK&#174; is a registered trademark of The MITRE Corporation. This tool is not affiliated with, endorsed by or sponsored by MITRE.
+        <br>https://clickfix.com | v$($Script:Version)
     </div>
 </body>
 </html>
