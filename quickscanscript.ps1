@@ -11,7 +11,7 @@
     modifications, no data transmission, no external dependencies.
 
     Product of Fields Cybersecurity Services, LLC
-    CLICKFIX℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC.
+    CLICKFIX℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com).
 
 .PARAMETER ExportJSON
     Export scan results as a JSON file for integration with the
@@ -862,7 +862,7 @@ function Invoke-QuickScan {
     # Service mark attribution
     Write-Host ""
     Write-Host "  CLICKFIX(SM) is a service mark of Grover Fields, used under license" -ForegroundColor DarkGray
-    Write-Host "  by Fields Cybersecurity Services, LLC. All rights reserved." -ForegroundColor DarkGray
+    Write-Host "  by Fields Cybersecurity Services, LLC (ClickFix.com). All rights reserved." -ForegroundColor DarkGray
     Write-Host "  https://clickfix.com | v$($Script:Version)" -ForegroundColor DarkGray
     Write-Host ""
 
