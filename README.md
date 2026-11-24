@@ -75,7 +75,7 @@ You can combine both export flags:
 Before running the script, verify its SHA-256 hash matches the value published here:
 
 ```
-SHA-256: C2459EDBF81DAB2E26812B33D89340ECB3B4ACC62EF8EA589D43E28CFDFAB3AC
+SHA-256: 2BC06D41621B4BD2C3C2F8F674C6627DCF59E5F814D80A411691F2FDBE8F456F
 ```
 
 To verify in PowerShell:
@@ -202,7 +202,7 @@ The Quick Scan Script provides a quick posture check. For a full assessment with
 
 ## Notice
 
-ClickFix refers to a social engineering attack technique (MITRE ATT&CK® T1204.004). CLICKFIX℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com), established 2001 and unrelated to this attack technique. All rights reserved. Fields Cybersecurity Services, LLC provides defensive cybersecurity consultation, education and advisory services and has no connection with any malware campaign, threat actor or product that uses the name.
+CLICKFIX℠ is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com), and is not affiliated with the copy-paste social engineering technique (MITRE ATT&CK® T1204.004). All rights reserved. Fields Cybersecurity Services, LLC provides defensive cybersecurity consultation, education and advisory services and has no connection with any malware campaign or threat actor.
 
 ## Trademarks
 

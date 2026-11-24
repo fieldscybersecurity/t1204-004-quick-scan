@@ -1114,7 +1114,7 @@ $resultRows
         </div>
     </div>
     <div class="footer">
-        ClickFix refers to a social engineering attack technique (MITRE ATT&amp;CK&#174; T1204.004). CLICKFIX&#8480; is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com), established 2001 and unrelated to this attack technique. All rights reserved. Fields Cybersecurity Services, LLC provides defensive cybersecurity consultation, education and advisory services and has no connection with any malware campaign, threat actor or product that uses the name.
+        CLICKFIX&#8480; is a service mark of Grover Fields, used under license by Fields Cybersecurity Services, LLC (ClickFix.com), and is not affiliated with the copy-paste social engineering technique (MITRE ATT&amp;CK&#174; T1204.004). All rights reserved. Fields Cybersecurity Services, LLC provides defensive cybersecurity consultation, education and advisory services and has no connection with any malware campaign or threat actor.
           <br>MITRE ATT&amp;CK&#174; is a registered trademark of The MITRE Corporation. This tool is not affiliated with, endorsed by or sponsored by MITRE.
         <br>https://clickfix.com | v$($Script:Version)
     </div>
